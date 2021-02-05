@@ -1,8 +1,11 @@
+from PyQt5.QtWidgets import *
+
+from great_circle import *
 from lambert import *
 from vincenty import *
 from vincenty_mod import *
-import math
-from PyQt5.QtWidgets import *
+
+script_description = open("readme.txt", "r").read()
 
 app = QApplication([])
 window = QTableWidget()
@@ -99,6 +102,7 @@ update_inputs()
 col2.coordinate.currentTextChanged.connect(update_inputs)
 
 col2.calculation = QComboBox()
+col2.calculation.addItem("Great Circle")
 col2.calculation.addItem("Lambert")
 col2.calculation.addItem("Vincenty")
 col2.calculation.addItem("Vincenty (Modified)")
@@ -131,14 +135,20 @@ def calculate():
     else:
 
         if col2.coordinate.currentIndex() == 0:
-            # Saving values input by user
+            # Saving geographic coordinates input by user
             lat1 = math.radians(float(col1.latInput1.text()))
             long1 = math.radians(float(col1.longInput1.text()))
             lat2 = math.radians(float(col1.latInput2.text()))
             long2 = math.radians(float(col1.longInput2.text()))
 
+            # Converting to spherical coordinates
+            polar1 = lat1 - (math.pi / 2)
+            azimuth1 = long1
+            polar2 = lat2 - (math.pi / 2)
+            azimuth2 = long2
+
         if col2.coordinate.currentIndex() == 1:
-            # Saving values input by user
+            # Saving spherical coordinates input by user
             polar1 = math.radians(float(col1.polarInput1.text()))
             azimuth1 = math.radians(float(col1.azimuthInput1.text()))
             polar2 = math.radians(float(col1.polarInput2.text()))
@@ -159,7 +169,7 @@ def calculate():
             col1.radiusInput2.setText(str(radius2))
 
         if col2.coordinate.currentIndex() == 2:
-            # Saving values input by user
+            # Saving cylindrical coordinates input by user
             axial1 = float(col1.axialInput1.text())
             azimuth1 = math.radians(float(col1.azimuthInput1.text()))
             elevation1 = float(col1.heightInput1.text())
@@ -174,6 +184,9 @@ def calculate():
             long2 = azimuth2
 
         # Passing coordinates to chosen method of calculation
+        if col2.calculation.currentText() == "Great Circle":
+            distance = str(great_circle(polar1, polar2, azimuth1, azimuth2))
+            col3.distanceBox.setText(distance)
         if col2.calculation.currentText() == "Lambert":
             distance = str(lambert(lat1, long1, lat2, long2))
             col3.distanceBox.setText(distance)
@@ -181,7 +194,7 @@ def calculate():
             distance = str(vincenty(lat1, long1, lat2, long2))
             col3.distanceBox.setText(distance)
         if col2.calculation.currentText() == "Vincenty (Modified)":
-            distance = str(vincentymod(lat1, long1, lat2, long2))
+            distance = str(vincenty_mod(lat1, long1, lat2, long2))
             col3.distanceBox.setText(distance)
 
         col3.notification.setText("Done.")
@@ -190,10 +203,22 @@ def calculate():
 col2.calculateButton.clicked.connect(calculate)
 
 # Arranging each section in the window
-layout = QVBoxLayout()
-layout.addLayout(col1)
-layout.addLayout(col2)
-layout.addLayout(col3)
+config = QVBoxLayout()
+
+config.addLayout(col1)
+config.addLayout(col2)
+config.addLayout(col3)
+
+layout = QHBoxLayout()
+layout.addLayout(config)
+
+description = QHBoxLayout()
+
+description.addWidget(QLabel(script_description))
+
+layout.addLayout(description)
+
+
 window.setLayout(layout)
 
 # Displaying the window
