@@ -51,7 +51,7 @@ col2.coordinate.addItem("Cylindrical (\u03c1, \u03c6, z)")
 # Updates the column of inputs each time the coordinate system selection changes
 def update_inputs():
     # Removes inputs for previously selected coordinate system
-    # This may be a hack-y way of doing this
+    # This may be a hack-y way of clearing QtWidgets
     for i in reversed(range(col1.count())):
         col1.itemAt(i).widget().setParent(None)
 
@@ -217,7 +217,6 @@ description = QHBoxLayout()
 description.addWidget(QLabel(script_description))
 
 layout.addLayout(description)
-
 
 window.setLayout(layout)
 
