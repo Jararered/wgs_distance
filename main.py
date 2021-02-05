@@ -12,18 +12,14 @@ window = QTableWidget()
 window.setWindowTitle("WGS-84 Distance")
 
 col1 = QVBoxLayout()
+col2 = QVBoxLayout()
+col3 = QVBoxLayout()
 
-a = 6378137.0
-b = 6356752.314245
-
-# Inputs for geographic coordinate system
+# Creating input boxes
 col1.latInput1 = QLineEdit()
 col1.longInput1 = QLineEdit()
-
 col1.latInput2 = QLineEdit()
 col1.longInput2 = QLineEdit()
-
-# Inputs for spherical/cylindrical coordinate system
 col1.radiusInput1 = QLineEdit()
 col1.azimuthInput1 = QLineEdit()
 col1.heightInput1 = QLineEdit()
@@ -35,13 +31,13 @@ col1.polarInput2 = QLineEdit()
 col1.axialInput1 = QLineEdit()
 col1.axialInput2 = QLineEdit()
 
+# Configuring the distance boxes to be non-editable
 col1.radiusInput1.setReadOnly(True)
 col1.radiusInput2.setReadOnly(True)
 col1.radiusInput1.setStyleSheet("QLineEdit" "{" "background : lightgrey;" "}")
 col1.radiusInput2.setStyleSheet("QLineEdit" "{" "background : lightgrey;" "}")
 
 # Coordinate system selection box
-col2 = QVBoxLayout()
 col2.coordinate = QComboBox()
 col2.coordinate.addItem("Geographic (Latitude, Longitude)")
 col2.coordinate.addItem("Spherical (r, \u03b8, \u03c6)")
@@ -115,7 +111,6 @@ col2.addWidget(QLabel("Calculation Method:"))
 col2.addWidget(col2.calculation)
 col2.addWidget(col2.calculateButton)
 
-col3 = QVBoxLayout()
 col3.addWidget(QLabel("Distance: (meters)"))
 col3.distanceBox = QLineEdit()
 col3.addWidget(col3.distanceBox)
@@ -155,6 +150,9 @@ def calculate():
             azimuth2 = math.radians(float(col1.azimuthInput2.text()))
 
             # Converting from spherical to geographic coordinates
+            a = 6378137.0
+            b = 6356752.314245
+
             lat1 = (math.pi / 2) - polar1
             radius1 = math.sqrt((((a ** 2) * math.cos(lat1)) ** 2 + ((b ** 2) * math.sin(lat1)) ** 2) / (
                     (a * math.cos(lat1)) ** 2 + (b * math.sin(lat1)) ** 2))
