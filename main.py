@@ -1,6 +1,6 @@
 from lambert import *
 from vincenty import *
-from vincentymod import *
+from vincenty_mod import *
 import math
 from PyQt5.QtWidgets import *
 

@@ -1,7 +1,7 @@
 import math
 
 
-def vincentymod(phi1, l1, phi2, l2):
+def vincenty_mod(phi1, l1, phi2, l2):
     semi_major = 6378137.0
     semi_minor = 6356752.314245
     flattening = (semi_major - semi_minor) / semi_major
@@ -32,6 +32,6 @@ def vincentymod(phi1, l1, phi2, l2):
     delta_sigma = b * math.sin(sigma) * (math.cos(2 * sigma_m) + (1 / 4) * b * (
                 math.cos(sigma) * (-1 + 2 * ((math.cos(2 * sigma_m)) ** 2)) - (b / 6) * math.cos(2 * sigma_m) * (
                     -3 + 4 * ((math.sin(sigma)) ** 2)) * (-3 + 4 * ((math.cos(2 * sigma_m)) ** 2))))
-    s = semi_minor * a * (sigma - delta_sigma)
-    print(s)
-    return s
+    distance = semi_minor * a * (sigma - delta_sigma)
+    print(distance)
+    return distance
