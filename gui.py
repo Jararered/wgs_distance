@@ -22,33 +22,33 @@ coord3 = QVBoxLayout()
 
 # Creating input boxes
 latInput1 = QLineEdit()
-latInput1.setPlaceholderText("(degrees)")
+latInput1.setText("0.0")
 longInput1 = QLineEdit()
-longInput1.setPlaceholderText("(degrees)")
+longInput1.setText("0.0")
 latInput2 = QLineEdit()
-latInput2.setPlaceholderText("(degrees)")
+latInput2.setText("0.0")
 longInput2 = QLineEdit()
-longInput2.setPlaceholderText("(degrees)")
+longInput2.setText("0.0")
 radiusInput1 = QLineEdit()
-radiusInput1.setPlaceholderText("(meters)")
+radiusInput1.setText("0.0")
 azimuthInput1 = QLineEdit()
-azimuthInput1.setPlaceholderText("(degrees)")
+azimuthInput1.setText("0.0")
 heightInput1 = QLineEdit()
-heightInput1.setPlaceholderText("(meters)")
+heightInput1.setText("0.0")
 polarInput1 = QLineEdit()
-polarInput1.setPlaceholderText("(degrees)")
+polarInput1.setText("0.0")
 radiusInput2 = QLineEdit()
-radiusInput2.setPlaceholderText("(meters)")
+radiusInput2.setText("0.0")
 azimuthInput2 = QLineEdit()
-azimuthInput2.setPlaceholderText("(degrees)")
+azimuthInput2.setText("0.0")
 heightInput2 = QLineEdit()
-heightInput2.setPlaceholderText("(meters)")
+heightInput2.setText("0.0")
 polarInput2 = QLineEdit()
-polarInput2.setPlaceholderText("(degrees)")
+polarInput2.setText("0.0")
 axialInput1 = QLineEdit()
-axialInput1.setPlaceholderText("(meters)")
+axialInput1.setText("0.0")
 axialInput2 = QLineEdit()
-axialInput2.setPlaceholderText("(meters)")
+axialInput2.setText("0.0")
 
 # Coordinate system selection box
 coordinateSystem = QComboBox()
@@ -93,8 +93,10 @@ def update_inputs():
     if coordinateSystem.currentIndex() == 1:
         coord1.addWidget(QLabel("Radius 1:"))
         coord1.addWidget(radiusInput1)
+        radiusInput1.setText("6378137.0")
         coord1.addWidget(QLabel("Radius 2:"))
         coord1.addWidget(radiusInput2)
+        radiusInput2.setText("6378137.0")
         coord2.addWidget(QLabel("Polar 1:"))
         coord2.addWidget(polarInput1)
         coord2.addWidget(QLabel("Polar 2:"))
@@ -152,13 +154,27 @@ def calculate():
         notification.setText("One or more inputs are not numbers.")
 
     else:
+        lat1 = math.radians(float(latInput1.text()))
+        lat2 = math.radians(float(latInput2.text()))
+        long1 = math.radians(float(longInput1.text()))
+        long2 = math.radians(float(longInput2.text()))
+        radius1 = float(radiusInput1.text())
+        radius2 = float(radiusInput2.text())
+        polar1 = math.radians(float(polarInput1.text()))
+        polar2 = math.radians(float(polarInput2.text()))
+        axial1 = float(axialInput1.text())
+        axial2 = float(axialInput2.text())
+        azimuth1 = math.radians(float(azimuthInput1.text()))
+        azimuth2 = math.radians(float(azimuthInput2.text()))
+        elevation1 = float(heightInput1.text())
+        elevation2 = float(heightInput2.text())
 
         if coordinateSystem.currentIndex() == 0:
-            # Saving geographic coordinates input by user
-            lat1 = math.radians(float(latInput1.text()))
-            long1 = math.radians(float(longInput1.text()))
-            lat2 = math.radians(float(latInput2.text()))
-            long2 = math.radians(float(longInput2.text()))
+            # # Saving geographic coordinates input by user
+            # lat1 = math.radians(float(latInput1.text()))
+            # long1 = math.radians(float(longInput1.text()))
+            # lat2 = math.radians(float(latInput2.text()))
+            # long2 = math.radians(float(longInput2.text()))
 
             # Converting to spherical coordinates
             polar1 = lat1 - (math.pi / 2)
@@ -167,37 +183,37 @@ def calculate():
             azimuth2 = long2
 
         if coordinateSystem.currentIndex() == 1:
-            # Saving spherical coordinates input by user
-            polar1 = math.radians(float(polarInput1.text()))
-            azimuth1 = math.radians(float(azimuthInput1.text()))
-            polar2 = math.radians(float(polarInput2.text()))
-            azimuth2 = math.radians(float(azimuthInput2.text()))
+            # # Saving spherical coordinates input by user
+            # polar1 = math.radians(float(polarInput1.text()))
+            # azimuth1 = math.radians(float(azimuthInput1.text()))
+            # polar2 = math.radians(float(polarInput2.text()))
+            # azimuth2 = math.radians(float(azimuthInput2.text()))
 
             # Converting from spherical to geographic coordinates
             a = 6378137.0
             b = 6356752.314245
 
             lat1 = (math.pi / 2) - polar1
-            radius1 = math.sqrt((((a ** 2) * math.cos(lat1)) ** 2 + ((b ** 2) * math.sin(lat1)) ** 2) / (
-                    (a * math.cos(lat1)) ** 2 + (b * math.sin(lat1)) ** 2))
+            # radius1 = math.sqrt((((a ** 2) * math.cos(lat1)) ** 2 + ((b ** 2) * math.sin(lat1)) ** 2) / (
+            #         (a * math.cos(lat1)) ** 2 + (b * math.sin(lat1)) ** 2))
             long1 = azimuth1
             lat2 = (math.pi / 2) - polar2
-            radius2 = math.sqrt((((a ** 2) * math.cos(lat2)) ** 2 + ((b ** 2) * math.sin(lat2)) ** 2) / (
-                    (a * math.cos(lat2)) ** 2 + (b * math.sin(lat2)) ** 2))
+            # radius2 = math.sqrt((((a ** 2) * math.cos(lat2)) ** 2 + ((b ** 2) * math.sin(lat2)) ** 2) / (
+            #         (a * math.cos(lat2)) ** 2 + (b * math.sin(lat2)) ** 2))
             long2 = azimuth2
 
             # Updating radius values
-            radiusInput1.setText(str(radius1))
-            radiusInput2.setText(str(radius2))
+            # radiusInput1.setText(str(radius1))
+            # radiusInput2.setText(str(radius2))
 
         if coordinateSystem.currentIndex() == 2:
-            # Saving cylindrical coordinates input by user
-            axial1 = float(axialInput1.text())
-            azimuth1 = math.radians(float(azimuthInput1.text()))
-            elevation1 = float(heightInput1.text())
-            axial2 = float(axialInput2.text())
-            azimuth2 = math.radians(float(azimuthInput2.text()))
-            elevation2 = float(heightInput2.text())
+            # # Saving cylindrical coordinates input by user
+            # axial1 = float(axialInput1.text())
+            # azimuth1 = math.radians(float(azimuthInput1.text()))
+            # elevation1 = float(heightInput1.text())
+            # axial2 = float(axialInput2.text())
+            # azimuth2 = math.radians(float(azimuthInput2.text()))
+            # elevation2 = float(heightInput2.text())
 
             # Converting from cylindrical coordinates to geographic coordinates
             lat1 = math.atan2(elevation1, axial1)
@@ -207,7 +223,7 @@ def calculate():
 
         # Passing coordinates to chosen method of calculation
         if calculationMethod.currentText() == "Great Circle":
-            distance = str(great_circle(polar1, polar2, azimuth1, azimuth2))
+            distance = str(great_circle(coordinateSystem.currentIndex(), radius1, radius2, polar1, polar2, azimuth1, azimuth2, axial1, axial2, elevation1, elevation2))
             distanceBox.setText(distance)
 
         if calculationMethod.currentText() == "Lambert":

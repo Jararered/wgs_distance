@@ -2,6 +2,7 @@ import math
 
 
 def vincenty(phi1, l1, phi2, l2):
+
     semi_major = 6378137.0
     semi_minor = 6356752.314245
     flattening = (semi_major - semi_minor) / semi_major
