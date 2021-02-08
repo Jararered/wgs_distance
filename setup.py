@@ -9,4 +9,6 @@ setup(
     author='Jared Nichols',
     author_email='Jararered@icloud.com',
     description='WGS-84 Distance Calculator',
+    install_requires=['PyQt5']
+
 )
